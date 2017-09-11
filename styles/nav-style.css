@@ -1,0 +1,164 @@
+body {
+
+  -webkit-animation: bugfix infinite 1s;
+  /* needed for checkbox hack */
+  
+}
+
+
+
+.dropdown-menu>li>a {
+    display: block;
+   
+    white-space: normal !important;
+}
+
+
+
+@-webkit-keyframes bugfix {
+  from {
+    padding: 0;
+  }
+  to {
+    padding: 0;
+  }
+}
+/* needed for checkbox hack */
+
+/*h1, p {
+  color: white;
+}*/
+
+#k-nav {
+  position: relative;
+}
+#k-nav ul {
+  display: none;
+  width: 100%;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+#k-nav ul li a {
+  display: block;
+  padding: 1em;
+  background: #0a1e36;
+  color: white;
+  text-decoration: none;
+  border-right: 1px solid #0a1e36;
+  font-size: 15px;
+}
+#k-nav ul li a:hover {
+  background: #0d8253;
+}
+#k-nav ul li:last-of-type a {
+  border-right: 0px;
+}
+#k-nav ul li ul li a {
+  padding-left: 1.5em;
+}
+#k-nav ul li ul li ul li a {
+  padding-left: 3.125em;
+}
+#k-nav input.trigger {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+#k-nav input.trigger:checked ~ ul, #k-nav input.trigger:checked ~ ul li ul {
+  display: block !important;
+}
+@media (min-width: 48em) {
+  #k-nav input.trigger:checked ~ ul, #k-nav input.trigger:checked ~ ul li ul {
+    /* older flexbox */
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    /* newer flexbox */
+    display: flex;
+    flex-direction: row;
+  }
+}
+#k-nav label {
+  position: relative;
+  display: block;
+  min-height: 2em;
+  padding: .45em;
+  font-size: 1.1em;
+  margin: 0;
+  cursor: pointer;
+  /*background: #005292;*/
+  line-height: 2em;
+  color: #bfe1fb;
+  
+}
+#k-nav label:after {
+  position: absolute;
+  right: 1em;
+  top: .2em;
+  content: "\2261";
+  font-size: 1.8em;
+  color: white;
+}
+@media (min-width: 48em) {
+	
+	
+
+	
+	
+	
+  #k-nav ul {
+    /* older flexbox */
+    display: -ms-flexbox;
+    flex-direction: -ms-row;
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    /* newer flexbox */
+    display: flex;
+    flex-direction: row;
+  }
+  #k-nav ul li {
+    position: relative;
+    text-align: center;
+    /* older flexbox */
+    -ms-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    /* newer flexbox */
+    flex: 1;
+  }
+  #k-nav ul li ul {
+    display: none !important;
+    position: absolute;
+    top: 3.4em;
+    left: 0;
+    display: block;
+    width: 20.5em;
+    z-index: 200;
+  }
+  #k-nav ul li ul li {
+    text-align: left;
+  }
+  #k-nav ul li ul li ul {
+    z-index: 300;
+    top: 0px;
+    left: 20.4em;
+  }
+  #k-nav ul li ul li ul li a {
+    padding-left: 30px !important;
+  }
+  #k-nav ul li:hover > ul {
+    display: block !important;
+  }
+  #k-nav label {
+    display: none;
+  }
+}

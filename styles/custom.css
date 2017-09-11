@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#top-row {
+	background: #0a1e36;
+	height: 10px;
+	margin: 0px;
+}
+
+ /* Sticky footer styles
+-------------------------------------------------- */
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	/* Margin bottom by footer height */
+	margin-bottom: 60px;
+	/*background: url("../images/master_bg.png") -10% -16px;*/
+}
+
+
+
+.btn-primary {
+    color: #fff;
+    background-color: #0a1e36 !important;
+    border-color: #000000 !important;
+}
+
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 50px;
+	background-color: #0a1e36;
+	padding: 15px 20px 0 20px;
+	color:#fff;
+}
+
+.footer a {
+	color:#fff;
+} 

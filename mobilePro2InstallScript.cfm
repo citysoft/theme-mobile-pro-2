@@ -2,7 +2,7 @@
 <!--- URL to run script:
 Option #1 - If you are using an extension folder to run the deployment script (which allows you to bypass the "check request" 
 security filter), then your deployment url might look like the following:
-http://www.domain.com/index.cfm?fuseaction=themeDeploy.mobilePro2&testmode=1&sections=1&pages=0&node=1&showerrors=1
+http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&themename=webthemeimages&images=1&showerrors=1
 
 Option #2 - If you want to run the file directly, the url might look similar to the following (but would need to be added as
 an exception in the "check request" security filter in order to run):
@@ -22,12 +22,37 @@ change testmode from 1 to 0 to run it. --->
 	<cfset variables.impagepath = "n_" & NumberFormat(url.node, "0009")>
 </cfif>
 
-<cfif isDefined("url.testmode") AND url.testmode EQ 1>
-	TEST MODE ONLY - NO INSERTS INTO CE DB<br>
+<cfif isDefined("url.themename") AND url.themename NEQ "">
+	<cfset variables.themename = url.themename>
 </cfif>
 
+SETTINGS SUMMARY<br>
+<cfoutput>
+<cfif isDefined("variables.themename") AND variables.themename NEQ "">
+	#variables.themename#<br>
+</cfif>
+<cfif isDefined("url.testmode") AND url.testmode EQ 1>
+	<p style="color: red; font-weight:bold;">TEST MODE ONLY - NO INSERTS INTO CE DB</p>
+</cfif>
+<cfif isDefined("url.sections") AND url.sections EQ "true">
+	SECTIONS SCRIPT TURNED ON<br>
+<cfelseif isDefined("url.sections") AND url.sections EQ "false">
+	SECTIONS SCRIPT TURNED OFF<br>
+</cfif>
+<cfif isDefined("url.pages") AND url.pages EQ "true">
+	PAGES SCRIPT TURNED ON<br>
+<cfelseif isDefined("url.pages") AND url.pages EQ "false">
+	PAGES SCRIPT TURNED OFF<br>
+</cfif>
+<cfif isDefined("url.node")>
+	NODEID = #url.node#<br>
+</cfif>
+<cfif isDefined("variables.impagepath")>
+	PATH TO THEME IMAGES = #variables.impagepath#<br>
+</cfif>
+</cfoutput>
+
 <cfset variables.sectiondescription = "Please Note - This section displays content on the home page.<br>  
-			The home page template uses the title of this section to find and display the section content on the home page.<br>  
 			Changes to the section title may cause the section content to disappear from the home page.">
 
 <!--- Install Slide Content Channels --->
@@ -109,6 +134,7 @@ change testmode from 1 to 0 to run it. --->
 			SELECT title
 			FROM contentT
 			WHERE title = <cfqueryparam value="#sectioninstallquery.sectiontitle#" cfsqltype="CF_SQL_VARCHAR">
+			AND NodeID = <cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
 		</cfquery>
 	
 		<cfif NOT dupecheck.recordcount>
@@ -205,6 +231,7 @@ change testmode from 1 to 0 to run it. --->
 			SELECT pagetitle
 			FROM page
 			WHERE pagetitle = <cfqueryparam value="#pageinstallquery.pagetitle#" cfsqltype="CF_SQL_VARCHAR">
+			AND NodeID = <cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
 		</cfquery>
 
 		<!--- Get ParentPageID for insert below into Page table. --->

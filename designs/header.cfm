@@ -41,6 +41,7 @@ Notes: 	This is a sample header file.  The header file file is generally called 
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+</head>
 <body>
 <div class="row">
   <div class="col-lg-12" id="top-row"> </div>

@@ -48,7 +48,12 @@ Notes: 	This is a sample header file.  The header file file is generally called 
 </div>
 <div class="container"> <br clear="all">
   <div class="row">
-    <div class="col-md-8"><a href="##"><img src="../_data/global/images/MobilePro2/logo-main-lg2.png"  alt="" class="img-responsive"/></a><br>
+    <div class="col-md-8">
+    	<cfoutput>
+	    	<cfset logo = application.apiv1.sectionsapi.getContentSection(sectionTitle="Logo", NodeID=#attributes.NodeID#)>
+			<cfif isDefined("logo.query.content")>#logo.query.content#</cfif>
+		</cfoutput>
+    	<!---<a href="##"><img src="../_data/global/images/MobilePro2/logo-main-lg2.png"  alt="" class="img-responsive"/></a><br>--->
     </div>
     <div class="col-md-4"> 
       

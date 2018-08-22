@@ -2,13 +2,14 @@
 <!--- URL to run script:
 Option #1 - If you are using an extension folder to run the deployment script (which allows you to bypass the "check request" 
 security filter), then your deployment url might look like the following:
-http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&themename=ThemeImages&images=1&showerrors=1
+http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&images=1&showerrors=1
 
 Option #2 - If you want to run the file directly, the url might look similar to the following (but would need to be added as
 an exception in the "check request" security filter in order to run):
-http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&showerrors=1 
+http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&images=1&showerrors=1 
 change testmode from 1 to 0 to run it. --->
-<cfparam name="variables.themename" default="MobilePro2" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->
+<!--- Note - images need to be ftp:ed into folder named the same as below --->
+<cfparam name="variables.ImageFolder" default="ThemeImages" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->
 <cfparam name="url.testmode" type="boolean" default="true">
 <cfparam name="url.sections" type="boolean" default="false">
 <cfparam name="url.pages" type="boolean" default="false">
@@ -22,8 +23,8 @@ change testmode from 1 to 0 to run it. --->
 	<cfset variables.impagepath = "n_" & NumberFormat(url.node, "0009")>
 </cfif>
 
-<cfif isDefined("url.themename") AND url.themename NEQ "">
-	<cfset variables.themename = url.themename>
+<cfif isDefined("url.ImageFolder") AND url.ImageFolder NEQ "">
+	<cfset variables.ImageFolder = url.ImageFolder>
 </cfif>
 <!--- START: SETTINGS SUMMARY (ON SCREEN) --->
 <strong>SETTINGS SUMMARY</strong><br>
@@ -31,8 +32,8 @@ change testmode from 1 to 0 to run it. --->
 <cfif isDefined("url.testmode") AND url.testmode EQ 1>
 	<p style="color: red; font-weight:bold;">TEST MODE ONLY - NO INSERTS INTO CE DB</p>
 </cfif>
-<cfif isDefined("variables.themename") AND variables.themename NEQ "">
-	Theme Name/Folder = #variables.themename#<br>
+<cfif isDefined("variables.ImageFolder") AND variables.ImageFolder NEQ "">
+	Image Folder = #variables.ImageFolder#<br>
 </cfif>
 <cfif isDefined("url.sections") AND url.sections EQ "true">
 	SECTIONS SCRIPT TURNED ON<br>
@@ -71,7 +72,7 @@ change testmode from 1 to 0 to run it. --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Logo" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.themename#/logo-main-lg2.png' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/logo-main-lg2.png' alt=''>" ) />
 
 		<!--- Social Media Section --->
 		<cfset QueryAddRow( sectioninstallquery ) />
@@ -83,28 +84,28 @@ change testmode from 1 to 0 to run it. --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 1" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.themename#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 2" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.themename#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 3" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.themename#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 4" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.themename#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 		
 		<!--- Call Out Sections --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Graphic1" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.themename#/hm-box-img-1.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.ImageFolder#/hm-box-img-1.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
 		
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Text1" ) />
@@ -114,7 +115,7 @@ change testmode from 1 to 0 to run it. --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Graphic2" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.themename#/hm-box-img-2.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.ImageFolder#/hm-box-img-2.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Text2" ) />
@@ -124,7 +125,7 @@ change testmode from 1 to 0 to run it. --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Graphic3" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.themename#/hm-box-img-3.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img data-src='holder.js/100%x200' alt='100%x200' src='/_data/#variables.impagepath#/images/#variables.ImageFolder#/hm-box-img-3.jpg' data-holder-rendered='true' style='width: 100%; display: block;'>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Call Out Text3" ) />

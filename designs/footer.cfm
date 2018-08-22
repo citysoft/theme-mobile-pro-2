@@ -24,7 +24,17 @@
 </footer>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<!---<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>---> 
+<!--- This script replaces the commented out one above so that we avoid having jquery called twice in some situations 
+	  (like in the manage your profile area) --->
+<script language="JavaScript">
+if (window.jQuery === undefined) {
+    var s = document.createElement('script');
+    s.src = "//https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js";
+    document.head.appendChild(s);
+}
+
+</script>
 
 <cfoutput>
 <!-- Include all compiled plugins (below), or include individual files as needed --> 

@@ -25,7 +25,6 @@ Notes: 	This is a sample header file.  The header file file is generally called 
 <!--- Add style sheets as necessary. --->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <cfoutput>
-  <!---<link rel="stylesheet" href="../_data/#vNodeFolder#/styles/flexnav.css" type="text/css" media="screen, projection" />--->
   <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/custom.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/normalize.min.css" media="screen" >
   <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/nav-style.css" media="screen" >
@@ -40,7 +39,12 @@ Notes: 	This is a sample header file.  The header file file is generally called 
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<!--- Load jQuery --->
+<cfif IsDefined("attributes.fuseaction") AND attributes.fuseaction EQ "home.editUserProfile">
+	<!--- Do Nothing since jquery will be loaded within the Manage Your Profile functionality --->
+<cfelse>
+	<script src="/_includes/jquery/1.11.3/jquery.min.js"></script>
+</cfif>
 </head>
 <body>
 <div class="row">

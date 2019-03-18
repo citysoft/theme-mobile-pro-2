@@ -9,6 +9,8 @@ an exception in the "check request" security filter in order to run):
 http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&images=1&showerrors=1 
 change testmode from 1 to 0 to run it. --->
 <!--- Note - images need to be ftp:ed into folder named the same as below --->
+<!--- One recommended scenario is to create /global/images/ThemeImages/ and put the graphics there.  That will make it easy for the image library in the web editor 
+	  UI to manage the images. --->
 <cfparam name="variables.ImageFolder" default="ThemeImages" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->
 <cfparam name="url.testmode" type="boolean" default="true">
 <cfparam name="url.sections" type="boolean" default="false">

@@ -18,7 +18,6 @@
 		<cfset footertext = application.apiv1.sectionsapi.getContentSection(sectionTitle="Footer Text", NodeID=#attributes.NodeID#)>
 			<cfif isDefined("footertext.query.content")>#footertext.query.content#</cfif>
 		</cfoutput>
-      	<!---<p>&copy; 2017 Your Organization | <a href="">Privacy</a> | <a href="">Terms</a></p>--->
     </div>
   </div>
 </footer>

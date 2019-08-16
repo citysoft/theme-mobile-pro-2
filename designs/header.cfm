@@ -72,7 +72,7 @@ Notes: 	This is a sample header file.  The header file file is generally called 
         <cfif isDefined("client.userid") and client.userid NEQ 0>
           <cfoutput><a href="/index.cfm?fuseaction=home.editUserProfile">#request.editProfileTitle#</a></cfoutput> | 
           <!--<li class="member" style="border-right:0px"> --><a href="/index.cfm?fuseaction=home.Logout&nodeID=1">Logout</a> |<!--</li> -->
-          <cfif isDefined("client.issuperuser") and client.issuperuser EQ 1>
+          <cfif isDefined("session.adminRoleID") and IsValid("integer",session.adminRoleID) AND session.adminRoleID GT 0>
             <!--<li class="member" style="border-right:0px"> --><a href="/admin">Admin</a><!--</li> -->
           </cfif>
           <cfelse>

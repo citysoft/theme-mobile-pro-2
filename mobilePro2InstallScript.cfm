@@ -15,6 +15,7 @@ change testmode from 1 to 0 to run it. --->
 <cfparam name="url.testmode" type="boolean" default="true">
 <cfparam name="url.sections" type="boolean" default="false">
 <cfparam name="url.pages" type="boolean" default="false">
+<cfparam name="url.pageslogin" type="boolean" default="false">
 <cfparam name="url.images" type="boolean" default="false"><!--- If this is 1, then /global/ directory; if 0, then use node directory --->
 <cfparam name="url.node" type="numeric" default=1><!--- Important to use the actual nodeid - this is where the pages and sections need to go. --->
 <cfparam name="variables.callouttext" type="string" default="<h3>LORUM IPSUM DOLORUM</h3><p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.<br><a href=''>Read More</a></p><p><a href='' class='btn btn-primary' role='button'>Dark Button &raquo;</a> <a href='' class='btn btn-default' role='button'>Light Button &raquo;</a></p>">
@@ -45,6 +46,11 @@ change testmode from 1 to 0 to run it. --->
 <cfif isDefined("url.pages") AND url.pages EQ "true">
 	PAGES SCRIPT TURNED ON<br>
 <cfelseif isDefined("url.pages") AND url.pages EQ "false">
+	PAGES SCRIPT TURNED OFF<br>
+</cfif>
+<cfif isDefined("url.pageslogin") AND url.pageslogin EQ "true">
+	PAGES SCRIPT TURNED ON<br>
+<cfelseif isDefined("url.pageslogin") AND url.pageslogin EQ "false">
 	PAGES SCRIPT TURNED OFF<br>
 </cfif>
 <cfif isDefined("url.node") AND url.node EQ 0>
@@ -232,11 +238,24 @@ change testmode from 1 to 0 to run it. --->
 	<cfset QuerySetCell( pageinstallquery, "pagenavtitle", "Join" ) />
 	<cfset QuerySetCell( pageinstallquery, "pagecontent", "Join Page Content" ) />
 
+	<cfset QueryAddRow( pageinstallquery ) />
+	<cfset QuerySetCell( pageinstallquery, "pagetitle", "Login" ) />
+	<cfset QuerySetCell( pageinstallquery, "pagenavtitle", "Login" ) />
+	<!--- NEED LOGIN CHANNEL INFO HERE --->
+
+
 	<!--- Get Page Template --->
 	<cfquery name="getpagetemplateid" datasource="#request.dsn#">
 		SELECT pagetemplateid
 		FROM pagetemplate
 		WHERE name = <cfqueryparam value="div_c1" cfsqltype="CF_SQL_VARCHAR">
+	</cfquery>
+
+	<!--- Get Channel Page Template --->
+	<cfquery name="getchannelpagetemplateid" datasource="#request.dsn#">
+		SELECT pagetemplateid
+		FROM pagetemplate
+		WHERE name = <cfqueryparam value="div_ch1" cfsqltype="CF_SQL_VARCHAR">
 	</cfquery>
 
 <cfdump var="#pageinstallquery#" label=""/>
@@ -289,6 +308,33 @@ change testmode from 1 to 0 to run it. --->
 							)
 						SELECT @@IDENTITY pageID
 					</cfquery>
+
+					<!--- ADD LOGIN PAGE CONTENT HERE IS TURNED ON --->
+					<cfif NOT url.testmode and url.pages EQ 1 and url.pageslogin EQ 1>
+						<cfquery name="insertpage" datasource="#request.dsn#">
+							INSERT INTO page(
+								parentpageID,
+								pagetemplateid,	
+								nodeid,
+								pageTitle,
+								pageNavTitle,
+								approvallevel,
+								CreatorUserID,
+								CreateDate
+								)
+							Values(
+								<cfqueryparam value="#getHomePageID.PageID#" cfsqltype="cf_sql_integer">
+								,<cfqueryparam value="#getpagetemplateid.pagetemplateid#" cfsqltype="CF_SQL_VARCHAR">
+								,<cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
+								,<cfqueryparam value="#trim(pageinstallquery.pagetitle)#" cfsqltype="CF_SQL_VARCHAR">
+								,<cfqueryparam value="#trim(pageinstallquery.pagenavtitle)#" cfsqltype="CF_SQL_VARCHAR">
+								,4
+								,4295
+								,#CreateODBCDateTime(now())#
+								)
+							SELECT @@IDENTITY pageID
+						</cfquery>
+					</cfif>
 					
 					<!--- Insert page content --->
 					<cfquery name="insertpagecontent" datasource="#request.dsn#">			
@@ -311,6 +357,30 @@ change testmode from 1 to 0 to run it. --->
 							,0
 							)
 					</cfquery>
+
+					<cfif NOT url.testmode and url.pages EQ 1 and url.pageslogin EQ 1>
+						<!--- Insert LOGIN page content --->
+						<cfquery name="insertpagecontent" datasource="#request.dsn#">			
+							INSERT INTO PageContent
+								(
+								PageID,
+								HTMLContent,
+								TemplatePosition,
+								CreatorUserID,
+								CreateDate,
+								ApplicationPK
+								)
+							VALUES 
+								(
+								<cfqueryparam value="#insertpage.pageid#" cfsqltype="CF_SQL_INTEGER">
+								,<cfqueryparam value="#pageinstallquery.pagecontent#" cfsqltype="CF_SQL_VARCHAR">
+								,'c1'
+								,4295
+								,#CreateODBCDateTime(now())#
+								,0
+								)
+						</cfquery>
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfoutput>

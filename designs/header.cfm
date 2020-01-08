@@ -73,9 +73,12 @@ Notes: 	This is a sample header file.  The header file file is generally called 
           <cfoutput><a href="/index.cfm?fuseaction=home.editUserProfile">#request.editProfileTitle#</a></cfoutput> | 
           <!--<li class="member" style="border-right:0px"> --><a href="/index.cfm?fuseaction=home.Logout&nodeID=1">Logout</a> |<!--</li> -->
           <cfif isDefined("session.adminRoleID") and IsValid("integer",session.adminRoleID) AND session.adminRoleID GT 0>
-            <!--<li class="member" style="border-right:0px"> --><a href="/admin">Admin</a><!--</li> -->
+            <!--<li class="member" style="border-right:0px"> --><a href="/admin">Admin</a><!--</li> --> | 
           </cfif>
-          <cfelse>
+          <cfif IsDefined("attributes.PageID") AND IsValid("integer",attributes.PageID)>
+	            <cfoutput><a href="/admin/index.cfm?fuseaction=PageAdmin.editLivePage&pageID=#attributes.PageID#">Edit This Page</a></cfoutput>
+          </cfif>
+        <cfelse>
           <!--<li class="member" style="border-right:0px"> --><a href="/login">Login</a><!--</li> -->
         </cfif>
         <!---| <a href="/subscribe">Subscribe</a>---> 

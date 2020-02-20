@@ -2,11 +2,11 @@
 <!--- URL to run script:
 Option #1 - If you are using an extension folder to run the deployment script (which allows you to bypass the "check request" 
 security filter), then your deployment url might look like the following:
-http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&images=1&showerrors=1
+http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&images=0&showerrors=1
 
 Option #2 - If you want to run the file directly, the url might look similar to the following (but would need to be added as
 an exception in the "check request" security filter in order to run):
-http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&images=1&showerrors=1 
+http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&images=0&showerrors=1 
 change testmode from 1 to 0 to run it. --->
 <!--- Note - images need to be ftp:ed into folder named the same as below --->
 <!--- One recommended scenario is to create /global/images/ThemeImages/ and put the graphics there.  That will make it easy for the image library in the web editor 
@@ -16,13 +16,27 @@ change testmode from 1 to 0 to run it. --->
 <cfparam name="url.sections" type="boolean" default="false">
 <cfparam name="url.pages" type="boolean" default="false">
 <cfparam name="url.pageslogin" type="boolean" default="false">
-<cfparam name="url.images" type="boolean" default="false"><!--- If this is 1, then /global/ directory; if 0, then use node directory --->
+<cfparam name="url.images" type="boolean" default="false"><!--- If this is 0, then /global/ directory; if 1, then use node directory --->
 <cfparam name="url.node" type="numeric" default=1><!--- Important to use the actual nodeid - this is where the pages and sections need to go. --->
 <cfparam name="variables.callouttext" type="string" default="<h3>LORUM IPSUM DOLORUM</h3><p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.<br><a href=''>Read More</a></p><p><a href='' class='btn btn-primary' role='button'>Dark Button &raquo;</a> <a href='' class='btn btn-default' role='button'>Light Button &raquo;</a></p>">
 
-<cfif isDefined("url.images") AND url.images EQ 1>
-	<cfset variables.impagepath = "global">
-<cfelseif isDefined("url.images") AND url.images EQ 0>
+<!--- Get the correct header name --->
+<cfquery name="getHeader" datasource="#request.dsn#">
+	SELECT h.headerID, headerName, headerPathName, footerPathName, h.NodeID
+	FROM header h, siteVariables s
+	WHERE h.headerId = s.headerId
+	AND s.nodeId = <cfqueryparam value="#lcase(url.node)#" cfsqltype="CF_SQL_INTEGER">
+</cfquery>
+
+<cfif getHeader.recordCount>
+	<cfset vHeaderName = getHeader.headerName>
+<cfelse>
+	No Header Name Detected<cfabort>
+</cfif>
+
+<cfif isDefined("url.images") AND url.images EQ 0>
+	<cfset variables.impagepath = "global/themes/#vHeaderName#">
+<cfelseif isDefined("url.images") AND url.images EQ 1>
 	<cfset variables.impagepath = "n_" & NumberFormat(url.node, "0009")>
 </cfif>
 
@@ -34,6 +48,9 @@ change testmode from 1 to 0 to run it. --->
 <cfoutput>
 <cfif isDefined("url.testmode") AND url.testmode EQ 1>
 	<p style="color: red; font-weight:bold;">TEST MODE ONLY - NO INSERTS INTO CE DB</p>
+</cfif>
+<cfif isDefined("vHeaderName") AND vHeaderName NEQ "">
+	Theme Folder = #vHeaderName#<br>
 </cfif>
 <cfif isDefined("variables.ImageFolder") AND variables.ImageFolder NEQ "">
 	Image Folder = #variables.ImageFolder#<br>
@@ -86,28 +103,28 @@ change testmode from 1 to 0 to run it. --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Social Media Icons" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<p class='pull-right'> <a href=''><i class='fa fa-facebook-square fa-3x'></i> </a> <a href=''><i class='fa fa-twitter-square fa-3x'></i> </a> <a href=''><i class='fa fa-linkedin-square fa-3x'></i> </a> <a href=''><i class='fa fa-youtube-square fa-3x'></i> </a> </p>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<p class='pull-right'> <a href=''><i class='fab fa-facebook-square fa-3x'></i> </a> <a href=''><i class='fab fa-twitter-square fa-3x'></i> </a> <a href=''><i class='fab fa-linkedin-square fa-3x'></i> </a> <a href=''><i class='fab fa-youtube-square fa-3x'></i> </a> </p>" ) />
 
 		<!--- Slide Sections --->
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 1" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img class='img-responsive' src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 2" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img class='img-responsive' src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 3" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img class='img-responsive' src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Slide 4" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<img class='img-responsive' src='../_data/#variables.impagepath#/images/#variables.ImageFolder#/main_img_new1.jpg' alt=''>" ) />
 		
 		<!--- Call Out Sections --->
 		<cfset QueryAddRow( sectioninstallquery ) />

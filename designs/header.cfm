@@ -14,23 +14,24 @@ Notes: 	This is a sample header file.  The header file file is generally called 
 
 <!--- Add Title and Meta Tags --->
 <cfoutput>
-  <title>MY ORGANIZATION |
+  <title>Magic Biscuits |
   <cfif isHomepage>
-    HOME PAGE TITLE
+    Home
     <cfelse>
     #attributes.pagetitle#
   </cfif>
   </title>
   #getMetaTags()#</cfoutput>
 <!--- Add style sheets as necessary. --->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!---<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">--->
+<script src="https://kit.fontawesome.com/14c1e1943a.js" crossorigin="anonymous"></script>
 <cfoutput>
-  <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/custom.css" type="text/css" media="screen" />
-  <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/normalize.min.css" media="screen" >
-  <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/nav-style.css" media="screen" >
+  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/custom.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/normalize.min.css" media="screen" >
+  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/nav-style.css" media="screen" >
   
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="../_data/#vNodeFolder#/styles/bootstrap.min.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/bootstrap.min.css" type="text/css" media="screen, projection"/>
 </cfoutput>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -114,7 +115,7 @@ Notes: 	This is a sample header file.  The header file file is generally called 
             <!---  Include menu file.  This will in turn include a cached navigation
 				file that, in conjunction with the id defined above and the .css file, will define 
 				the navigation (e.g. a drop down menu structure). --->
-            <cfinclude template="../../../_includes/design/menu.cfm">
+            <cfinclude template="../../../../_includes/design/menu.cfm">
             <!---   Optional: Add login and admin links to menu. ---> 
             <!---
 				<cfif isDefined("client.userid") and client.userid NEQ 0>

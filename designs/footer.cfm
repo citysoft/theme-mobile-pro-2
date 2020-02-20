@@ -23,7 +23,7 @@
 </footer>
 <cfoutput>
 <!-- Include all compiled plugins (below), or include individual files as needed --> 
-<script src="../_data/#vNodeFolder#/scripts/bootstrap.min.js"></script> 
+<script src="../_data/global/themes/#vHeaderName#/scripts/bootstrap.min.js"></script> 
 </cfoutput>
 </body>
 </html>

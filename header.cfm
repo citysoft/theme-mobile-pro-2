@@ -1,8 +1,7 @@
 <!--- 
 Theme: 	Mobile Pro 2.0
 File: 	header.cfm
-Notes: 	This is a sample header file.  The header file file is generally called from 
-		head.cfm after the call to init.cfm.
+Notes: 	This is a sample header file.
 --->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +13,7 @@ Notes: 	This is a sample header file.  The header file file is generally called 
 
 <!--- Add Title and Meta Tags --->
 <cfoutput>
-  <title>Magic Biscuits |
+  <title>My Organization |
   <cfif isHomepage>
     Home
     <cfelse>

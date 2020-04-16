@@ -1,9 +1,20 @@
 <!--- This script installs the content sections into CE for use in the Mobile Pro 2 theme --->
 <!--- If this is run via button in Admin > Site Settings screen, the following URL options are not needed and can be ignored. --->
 <!--- NOTE - to run script via a url (not from Site Settings), use similar script mobilePro2InstallScriptURL.cfm --->
-<!--- NOTE - images need to be ftp:ed into folder named the same as below --->
-<!--- One recommended scenario is to create /global/images/ThemeImages/ and put the graphics there.  That will make it easy for the image library in the web editor 
-	  UI to manage the images. --->
+<!--- 
+	  INSTRUCTIONS
+	  1. Create Theme Folder in /global/themes/ (e.g. "CLIENTNAMETheme")
+	  2. Add /fonts/, /scripts/, /styles/ folder from theme folders to that new theme folder
+	  3. Add header.cfm, footer.cfm, and this CEInstallScript.cfm to the root folder of the theme
+	  4. Create an images folder for the default theme images in the /global/images/ folder (e.g. /global/images/CLIENTNAMEThemeImages)
+	  5. Add the default theme images into that folder (NOTE - when the file manager is adjusted, the theme images folder can appear within the core theme folder)
+	  6. In the Admin > Settings > Site Settings screen, select that theme from the list and click the Update button to assign this theme to the site
+	  7. Once assigned, this site should have a "Run Install Script" green button next to it
+	  8. Click this green button to run the script
+	  TO DO: Add Log table for themes to track scripts that have been run for themes, and on which nodes / sites.
+	  TO DO: Adjust image library / file manager to be able to access more than the default /global/images/ folder.
+	  TO DO: Review Login Page section of script and make sure that is working
+ --->
 <cfparam name="variables.ImageFolder" default="ThemeImages" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->
 <cfparam name="url.testmode" type="boolean" default="true">
 <cfparam name="url.sections" type="boolean" default="false">

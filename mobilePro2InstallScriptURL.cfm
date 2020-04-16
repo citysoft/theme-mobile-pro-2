@@ -1,7 +1,15 @@
 <!--- This script installs the content sections into CE for use in the Mobile Pro 2 theme --->
 <!--- If this is run via button in Admin > Site Settings screen, the following URL options are not needed and can be ignored. --->
-<!--- NOTE - to run script via a url (not from Site Settings), use similar script mobilePro2InstallScriptURL.cfm --->
-<!--- NOTE - images need to be ftp:ed into folder named the same as below --->
+<!--- URL to run script:
+Option #1 - If you are using an extension folder to run the deployment script (which allows you to bypass the "check request" 
+security filter), then your deployment url might look like the following:
+http://www.domain.com/index.cfm?fuseaction=themeDeploy.installmobilePro2&testmode=1&sections=1&pages=1&node=1&images=0&showerrors=1
+
+Option #2 - If you want to run the file directly, the url might look similar to the following (but would need to be added as
+an exception in the "check request" security filter in order to run):
+http://www.domain.com/_data/n_0001/scripts/mobilePro2InstallScript.cfm?testmode=1&sections=1&pages=1&images=0&showerrors=1 
+change testmode from 1 to 0 to run it. --->
+<!--- Note - images need to be ftp:ed into folder named the same as below --->
 <!--- One recommended scenario is to create /global/images/ThemeImages/ and put the graphics there.  That will make it easy for the image library in the web editor 
 	  UI to manage the images. --->
 <cfparam name="variables.ImageFolder" default="ThemeImages" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->

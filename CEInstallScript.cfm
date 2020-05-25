@@ -381,7 +381,7 @@
 								)
 							Values(
 								<cfqueryparam value="#getHomePageID.PageID#" cfsqltype="cf_sql_integer">
-								,<cfqueryparam value="#getpagetemplateid.pagetemplateid#" cfsqltype="CF_SQL_VARCHAR">
+								,<cfqueryparam value="#getpagetemplateid.getchannelpagetemplateid#" cfsqltype="CF_SQL_VARCHAR">
 								,<cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
 								,<cfqueryparam value="#trim(pageinstallquery.pagetitle)#" cfsqltype="CF_SQL_VARCHAR">
 								,<cfqueryparam value="#trim(pageinstallquery.pagenavtitle)#" cfsqltype="CF_SQL_VARCHAR">
@@ -421,7 +421,7 @@
 							INSERT INTO PageContent
 								(
 								PageID,
-								HTMLContent,
+								ApplicationID,
 								TemplatePosition,
 								CreatorUserID,
 								CreateDate,
@@ -431,7 +431,7 @@
 								(
 								<cfqueryparam value="#insertpage.pageid#" cfsqltype="CF_SQL_INTEGER">
 								,<cfqueryparam value="#pageinstallquery.pagecontent#" cfsqltype="CF_SQL_VARCHAR">
-								,'c1'
+								,'a1'
 								,4295
 								,#CreateODBCDateTime(now())#
 								,0

@@ -25,10 +25,11 @@ Notes: 	This is a sample header file.
 <!---<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">--->
 <script src="https://kit.fontawesome.com/14c1e1943a.js" crossorigin="anonymous"></script>
 <cfoutput>
-  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/custom.css" type="text/css" media="screen" />
-  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/normalize.min.css" media="screen" >
-  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/nav-style.css" media="screen" >
-  
+  <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/custom.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/normalize.min.css" media="screen" >
+  <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/nav-style.css" media="screen" >
+  <link rel="stylesheet" href="/_data/global/styles/main.css" type="text/css" />
+
   <!-- Bootstrap -->
   <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/bootstrap.min.css" type="text/css" media="screen, projection"/>
 </cfoutput>
@@ -283,5 +284,4 @@ Notes: 	This is a sample header file.
   </div>
   <!---END: HOME SECTION BOXES--->  
 </cfif>
-<br>
 <br>

@@ -22,16 +22,17 @@ Notes: 	This is a sample header file.
   </title>
   #getMetaTags()#</cfoutput>
 <!--- Add style sheets as necessary. --->
-<!---<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">--->
+
 <script src="https://kit.fontawesome.com/14c1e1943a.js" crossorigin="anonymous"></script>
 <cfoutput>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/bootstrap.min.css" type="text/css" media="screen, projection"/>
+  <script src="/_data/global/themes/#vHeaderName#/styles/bootstrap.min.js" type="text/javascript"></script>
+
   <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/custom.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/normalize.min.css" media="screen" >
   <link rel="stylesheet" href="/_data/global/themes/#vHeaderName#/styles/nav-style.css" media="screen" >
   <link rel="stylesheet" href="/_data/global/styles/main.css" type="text/css" />
-
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="../_data/global/themes/#vHeaderName#/styles/bootstrap.min.css" type="text/css" media="screen, projection"/>
 </cfoutput>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -44,7 +45,13 @@ Notes: 	This is a sample header file.
 <cfif IsDefined("attributes.fuseaction") AND attributes.fuseaction EQ "home.editUserProfile">
 	<!--- Do Nothing since jquery will be loaded within the Manage Your Profile functionality --->
 <cfelse>
-	<script src="/_includes/jquery/1.11.3/jquery.min.js"></script>
+	<!--- Newer Version --->
+	<script
+	  src="https://code.jquery.com/jquery-3.5.1.min.js"
+	  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+	  crossorigin="anonymous"></script>
+	<!--- Older Version --->
+	<!---<script src="/_includes/jquery/1.11.3/jquery.min.js"></script>--->
 </cfif>
 </head>
 <body>

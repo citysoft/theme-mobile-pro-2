@@ -10,23 +10,44 @@
  /* Sticky footer styles
 -------------------------------------------------- */
 html {
+    font-size: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 	position: relative;
 	min-height: 100%;
 }
+
+html, button, input, select, textarea {
+    font-family: sans-serif;
+}
+
+body{margin:0}
+
 body {
+    font-size: 16px;
+    font-family: "Avenir Next", "Avenir", "Avenir Next W01", system-ui, sans-serif;
+    line-height: 1.6;
+    color: #373737;
+    hanging-punctuation: first;
 	/* Margin bottom by footer height */
 	margin-bottom: 60px;
 	/*background: url("../images/master_bg.png") -10% -16px;*/
 }
 
+h1   { font-size: 2rem; } /* =32px */
+h2   { font-size: 1.875rem; } /* =30px */
+h3   { font-size: 1.5rem; } /* =24px */
 
+@media (min-width: 769px)
+body {
+    font-size: 18px;
+}
 
 .btn-primary {
     color: #fff;
     background-color: #0a1e36 !important;
     border-color: #000000 !important;
 }
-
 
 .footer {
 	position: absolute;

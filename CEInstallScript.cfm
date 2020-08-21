@@ -14,12 +14,15 @@
 	  TO DO: Add Log table for themes to track scripts that have been run for themes, and on which nodes / sites.
 	  TO DO: Adjust image library / file manager to be able to access more than the default /global/images/ folder.
 	  TO DO: Review Login Page section of script and make sure that is working
+	  TO DO: Remove page content on home page
+	  TO DO: Remove "Page1" default page that is set up during deployment
+	  TO DO: After adding new pages, reset menu
  --->
 <cfparam name="variables.ImageFolder" default="ThemeImages" type="string"><!--- This is more like a path variable for the images subfolder (e.g. "ThemeImages") --->
 <cfparam name="url.testmode" type="boolean" default="true">
 <cfparam name="url.sections" type="boolean" default="false">
 <cfparam name="url.pages" type="boolean" default="false">
-<cfparam name="url.pageslogin" type="boolean" default="false">
+<cfparam name="url.pageslogin" type="boolean" default="true"><!--- Install Login page and shortcut by default --->
 <cfparam name="url.images" type="boolean" default="false"><!--- If this is 0, then /global/ directory; if 1, then use node directory --->
 <cfparam name="url.node" type="numeric" default=1><!--- Important to use the actual nodeid - this is where the pages and sections need to go. --->
 <cfparam name="variables.callouttext" type="string" default="<h3>LORUM IPSUM DOLORUM</h3><p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.<br><a href=''>Read More</a></p><p><a href='' class='btn btn-primary' role='button'>Dark Button &raquo;</a> <a href='' class='btn btn-default' role='button'>Light Button &raquo;</a></p>">
@@ -44,7 +47,7 @@
 	<cfset url.testmode = attributes.TestMode><!--- 0 by default --->
 	<cfset url.sections = attributes.Sections><!--- 1 by default --->
 	<cfset url.pages = attributes.Pages><!--- 1 by default --->
-	<cfset url.pageslogin = attributes.PagesLogin><!--- 0 by default --->
+	<cfset url.pageslogin = attributes.PagesLogin><!--- 1/true by default --->
 	<cfset url.images = attributes.Images><!--- 2 by default (for /global/ folder) --->
 	<cfset url.node = attributes.NodeID><!--- NodeID from Site Settings --->
 	<!--- NOTE - Need to makes sure this folder exists AND the images are in it --->
@@ -134,7 +137,7 @@
 		<cfset QueryAddRow( sectioninstallquery ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiontitle", "Social Media Icons" ) />
 		<cfset QuerySetCell( sectioninstallquery, "sectiondescription", "#variables.sectiondescription#" ) />
-		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<p class='pull-right'> <a href=''><i class='fab fa-facebook-square fa-3x'></i> </a> <a href=''><i class='fab fa-twitter-square fa-3x'></i> </a> <a href=''><i class='fab fa-linkedin-square fa-3x'></i> </a> <a href=''><i class='fab fa-youtube-square fa-3x'></i> </a> </p>" ) />
+		<cfset QuerySetCell( sectioninstallquery, "sectioncontent", "<p class='pull-right'> <a href=''><i class='fab fa-facebook-square fa-3x'></i> </a> <a href=''><i class='fab fa-twitter-square fa-3x'></i> </a> <a href=''><i class='fab fa-linkedin fa-3x'></i> </a> <a href=''><i class='fab fa-youtube-square fa-3x'></i> </a><a href='' target='_blank'><i class='fab fa-instagram-square fa-3x'></i> </a> </p>" ) />
 
 		<!--- Slide Sections --->
 		<cfset QueryAddRow( sectioninstallquery ) />
@@ -295,11 +298,18 @@
 	<cfset QuerySetCell( pageinstallquery, "pagenavtitle", "Join" ) />
 	<cfset QuerySetCell( pageinstallquery, "pagecontent", "Join Page Content" ) />
 
-	<cfset QueryAddRow( pageinstallquery ) />
-	<cfset QuerySetCell( pageinstallquery, "pagetitle", "Login" ) />
-	<cfset QuerySetCell( pageinstallquery, "pagenavtitle", "Login" ) />
+	<cfif NOT url.testmode and IsDefined("url.pages") AND url.pages EQ 1 AND IsDefined("url.pageslogin") AND url.pageslogin EQ 1>
+		<cfset QueryAddRow( pageinstallquery ) />
+		<cfset QuerySetCell( pageinstallquery, "pagetitle", "Login" ) />
+		<cfset QuerySetCell( pageinstallquery, "pagenavtitle", "Login" ) />
+	</cfif>
+	
 	<!--- NEED LOGIN CHANNEL INFO HERE --->
-
+	<cfquery name="getLoginFormApplicationID" datasource="#request.dsn#">
+		SELECT ApplicationID
+		FROM Application
+		WHERE Name = <cfqueryparam value="Login Form" cfsqltype="CF_SQL_VARCHAR">
+	</cfquery>
 
 	<!--- Get Page Template --->
 	<cfquery name="getpagetemplateid" datasource="#request.dsn#">
@@ -354,8 +364,16 @@
 							CreateDate
 							)
 						Values(
-							<cfqueryparam value="#getHomePageID.PageID#" cfsqltype="cf_sql_integer">
-							,<cfqueryparam value="#getpagetemplateid.pagetemplateid#" cfsqltype="CF_SQL_VARCHAR">
+							<cfif pageinstallquery.pagetitle EQ "Login">
+								-1
+							<cfelse>
+								<cfqueryparam value="#getHomePageID.PageID#" cfsqltype="cf_sql_integer">
+							</cfif>
+							<cfif pageinstallquery.pagetitle EQ "Login">
+								,<cfqueryparam value="#getchannelpagetemplateid.pagetemplateid#" cfsqltype="CF_SQL_INTEGER">
+							<cfelse>
+								,<cfqueryparam value="#getpagetemplateid.pagetemplateid#" cfsqltype="CF_SQL_INTEGER">					
+							</cfif>
 							,<cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
 							,<cfqueryparam value="#trim(pageinstallquery.pagetitle)#" cfsqltype="CF_SQL_VARCHAR">
 							,<cfqueryparam value="#trim(pageinstallquery.pagenavtitle)#" cfsqltype="CF_SQL_VARCHAR">
@@ -365,40 +383,17 @@
 							)
 						SELECT @@IDENTITY pageID
 					</cfquery>
-
-					<!--- ADD LOGIN PAGE CONTENT HERE IS TURNED ON --->
-					<cfif NOT url.testmode and url.pages EQ 1 and url.pageslogin EQ 1>
-						<cfquery name="insertpage" datasource="#request.dsn#">
-							INSERT INTO page(
-								parentpageID,
-								pagetemplateid,	
-								nodeid,
-								pageTitle,
-								pageNavTitle,
-								approvallevel,
-								CreatorUserID,
-								CreateDate
-								)
-							Values(
-								<cfqueryparam value="#getHomePageID.PageID#" cfsqltype="cf_sql_integer">
-								,<cfqueryparam value="#getpagetemplateid.getchannelpagetemplateid#" cfsqltype="CF_SQL_VARCHAR">
-								,<cfqueryparam value="#url.node#" cfsqltype="cf_sql_integer">
-								,<cfqueryparam value="#trim(pageinstallquery.pagetitle)#" cfsqltype="CF_SQL_VARCHAR">
-								,<cfqueryparam value="#trim(pageinstallquery.pagenavtitle)#" cfsqltype="CF_SQL_VARCHAR">
-								,4
-								,4295
-								,#CreateODBCDateTime(now())#
-								)
-							SELECT @@IDENTITY pageID
-						</cfquery>
-					</cfif>
 					
 					<!--- Insert page content --->
 					<cfquery name="insertpagecontent" datasource="#request.dsn#">			
 						INSERT INTO PageContent
 							(
 							PageID,
-							HTMLContent,
+							<cfif pageinstallquery.pagetitle EQ "Login">
+								ApplicationID,								
+							<cfelse>
+								HTMLContent,
+							</cfif>
 							TemplatePosition,
 							CreatorUserID,
 							CreateDate,
@@ -407,34 +402,38 @@
 						VALUES 
 							(
 							<cfqueryparam value="#insertpage.pageid#" cfsqltype="CF_SQL_INTEGER">
-							,<cfqueryparam value="#pageinstallquery.pagecontent#" cfsqltype="CF_SQL_VARCHAR">
-							,'c1'
+							<cfif pageinstallquery.pagetitle EQ "Login">
+								,<cfqueryparam value="#getLoginFormApplicationID.ApplicationID#" cfsqltype="CF_SQL_INTEGER">							
+							<cfelse>
+								,<cfqueryparam value="#pageinstallquery.pagecontent#" cfsqltype="CF_SQL_VARCHAR">
+							</cfif>
+							<cfif pageinstallquery.pagetitle EQ "Login">
+								,'a1'								
+							<cfelse>
+								,'c1'
+							</cfif>
 							,4295
 							,#CreateODBCDateTime(now())#
 							,0
 							)
 					</cfquery>
 
-					<cfif NOT url.testmode and url.pages EQ 1 and url.pageslogin EQ 1>
-						<!--- Insert LOGIN page content --->
-						<cfquery name="insertpagecontent" datasource="#request.dsn#">			
-							INSERT INTO PageContent
+					<cfif pageinstallquery.pagetitle EQ "Login">
+						<!--- Insert LOGIN page shortcut --->
+						<cfquery name="insertpageshortcut" datasource="#request.dsn#">			
+							INSERT INTO PageShortcut
 								(
 								PageID,
-								ApplicationID,
-								TemplatePosition,
+								Name,
 								CreatorUserID,
 								CreateDate,
-								ApplicationPK
 								)
 							VALUES 
 								(
 								<cfqueryparam value="#insertpage.pageid#" cfsqltype="CF_SQL_INTEGER">
-								,<cfqueryparam value="#pageinstallquery.pagecontent#" cfsqltype="CF_SQL_VARCHAR">
-								,'a1'
+								,<cfqueryparam value="login" cfsqltype="CF_SQL_VARCHAR">
 								,4295
 								,#CreateODBCDateTime(now())#
-								,0
 								)
 						</cfquery>
 					</cfif>
